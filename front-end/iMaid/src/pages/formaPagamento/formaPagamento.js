@@ -10,23 +10,26 @@ export default class formaPagamento extends Component{
         this.state = {
         cartoes: [],
         opcaoPagamento: 6,
-        tela: 'formaPagamento'
+        tela: 'formaPagamento',
+        receive: false,
         }
         this.pegarDadosBD = this.pegarDadosBD.bind(this)
-        this.selecionarRadio = this.selecionarRadio.bind(this)
+        this.selecionarRadio = this.selecionarRadio.bind(this) 
     }
     
   pegarDadosBD () {
-    fetch('http://192.168.0.104:3000/cartoes')
+    fetch('http://192.168.0.104:3001/cartoes/')
     .then(response=> response.json())
     .then(cartoes=> {this.setState({ cartoes: cartoes })})
+    console.warn('Carregando dados de cartões...')
+    this.setState({receive: true})
   }  
   
   selecionarRadio(indice){
     this.setState({opcaoPagamento: indice})
   }
-
-
+ 
+  
   render(){
     var state = this.state
 
@@ -35,8 +38,11 @@ export default class formaPagamento extends Component{
     ))
   
     var selecionarRadio =  this.selecionarRadio 
-    function RenderizarItens(props){
+    var pegarDadosBD = this.pegarDadosBD
     
+    function RenderizarItens(props){
+      
+      
       return(
         <View style={style.item}> 
           <View style={style.areaInfoCartao}>
@@ -73,7 +79,9 @@ export default class formaPagamento extends Component{
             <View style = {style.viewButton}>
               <TouchableOpacity 
               style = {style.button}
-              onPress={ ()=> navigation.navigate('Adicionar Cartão') }
+              onPress={ ()=> {
+                navigation.navigate('Adicionar Cartão', )
+              }}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
               </TouchableOpacity>
@@ -82,9 +90,9 @@ export default class formaPagamento extends Component{
             </View>
         )
     }
-
+    if(!state.receive) pegarDadosBD() // se nunca tiver recebidos os dados, faz a requisição
     return (
-      <View style={style.container} onLayout={this.pegarDadosBD}> 
+      <View style={style.container} > 
         {/* <View style = { styles.cabeçalho }>
           <Text style={ styles.texto }>Forma de Pagamento</Text>
         </View> */} 
@@ -94,7 +102,7 @@ export default class formaPagamento extends Component{
                     {/* Renderiza apenas o Item Dinheiro*/}
         <RenderizarItens tipo={'Dinheiro'}  indice={6}/>
                     {/* Renderiza um botão que leva para a pagina adicionarCartao */}
-        <AdicionarCartao/>
+        <AdicionarCartao />
        
         <Text>Implementar deletar cartão</Text>
         <Text>Implementar editar cartão</Text>

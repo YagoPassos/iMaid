@@ -24,11 +24,12 @@ export default function adicionarCartao(){
     var [receive, setReceive] = useState(false)
     
     function PegarPaises(){
-        fetch('http://192.168.0.104:3000/paises')
+        fetch('http://192.168.0.104:3001/paises/')
         .then((dados)=> dados.json())
         .then((dados)=> {
             setDadosPicker(dados)
             setReceive(true)
+            console.log('Leu os paises...')
         })
     }
     
@@ -48,7 +49,7 @@ export default function adicionarCartao(){
               <TouchableOpacity 
               style = {style.button}
               onPress={ () => {
-                var url = `http://192.168.0.104:3000/cartoes/adicionarCartao/${numero}/${vencimento}/${csv}/${dono}/${bandeira}`
+                var url = `http://192.168.0.104:3001/cartoes/adicionarCartao/${numero}/${vencimento}/${csv}/${dono}/${bandeira}`
                 axios.post(url)
                 console.log('URL POST: ' + url)
             }}
@@ -64,7 +65,7 @@ export default function adicionarCartao(){
     if (!receive) PegarPaises()
     
     return(
-        <View style={style.conteiner}>
+        <View style={style.conteiner} >
             <View style={style.areaInputNumero}> 
                 <View style={style.areaTexto}>
                     <Text style={ style.texto }>Número do cartão</Text>
