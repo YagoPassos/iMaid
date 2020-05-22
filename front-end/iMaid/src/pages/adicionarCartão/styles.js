@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     areaInputNumero: {
-        height: 60,
+        height: 70,
         width: 340,
         borderBottomWidth: 1,
         borderBottomColor: '#808080',
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         marginRight: 5
     },
     input:{
-        height: 45,
+        height: 50,
         width: 240,
     },
     texto:{
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     areaInputDublo:{
         marginTop: 10,
-        height: 40,
+        height: 50,
         width: 340,
         flexDirection: "row",
         justifyContent: 'space-between',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     areaInput1:{
-        height: 40,
+        height: 50,
         width: 120,
     },
     img3:{
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         marginLeft: 0
     },
     areaInput2:{
-        height: 40,
+        height: 50,
         width: 120,
     },
     areaPicker:{
@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
         width: 120
     },
     picker:{
-            height: 40,
+            height: 50,
             width: 318
     }, 
     pais:{
         marginTop: 10,
-        height: 40,
+        height: 50,
         width: 340,
         flexDirection: 'row',
         borderBottomWidth: 1,
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     button:{
         backgroundColor: '#40E0D0',
         height: 40,
-        width: 180,
-        borderRadius: 15,
+        width: 280,
+        borderRadius: 10,
         alignItems: "center",
         justifyContent: "center",
       },

@@ -20,9 +20,9 @@ export default function adicionarCartao(){
     var [pais, setPais] = useState('Brasil')
     var [dono, setDono] = useState('Paulo')
     var [bandeira, setBandeira] = useState('Master')
-    
     var [receive, setReceive] = useState(false)
-    
+    var [modo, setModo] = useState(0)
+
     function PegarPaises(){
         fetch('http://192.168.0.104:3001/paises/')
         .then((dados)=> dados.json())
@@ -40,10 +40,8 @@ export default function adicionarCartao(){
     })
 
     function BotaoCadastrar(){
-       
-        ///adicionarCartao/:numero/:dataVencimento/:csv/:nomeDono/:bandeira
-        //  http://192.168.0.104:3000/cartoes/adicionarCartao/11111111111/2405/426/Paulo/Master
-       
+        //adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira
+        // ex: http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
         return(
             <View style = {style.viewButton}>
               <TouchableOpacity 
@@ -51,7 +49,7 @@ export default function adicionarCartao(){
               onPress={ () => {
                 var url = `http://192.168.0.104:3001/cartoes/adicionarCartao/${numero}/${vencimento}/${csv}/${dono}/${bandeira}`
                 axios.post(url)
-                console.log('URL POST: ' + url)
+                console.log('URL POST: ' + url)  
             }}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
@@ -62,7 +60,41 @@ export default function adicionarCartao(){
         )
     }
 
-    if (!receive) PegarPaises()
+    // modo é pra dizer se pode ou não apagar, para não ficar apagando e dando espaço infinitamente
+    function onChangeNumero(value){
+        //Garante que só será cadastrado numeros
+        if(!isNaN(parseInt(value.substring(value.length-1)))){
+            console.log('Number')
+            setNumero(value)
+            if(value.length==4 && modo===0 ) { //Faz o espaço sozinho
+                setNumero(value + ' ')
+            }
+            else if(value.length==6) setModo(1) //Seta para 1 após o primeiro caractere após o espaço, garante que dá pra apagar o espaço depois
+            else if(value.length<=3 && modo==1) setModo(0) //Garante que após apagar ele consiga escrever mantendo a mascara
+
+            if(value.length==9 && modo==1) { //Faz o espaço sozinho
+                setNumero(value + ' ')
+            }
+            else if(value.length==11) setModo(0) // Garante que dá pra apagar o espaço depois
+            else if(value.length==9 && modo==0) setModo(1) //Garante que após apagar ele consiga escrever mantendo a mascara
+
+            if(value.length==14 && modo==0) { //Faz o espaço sozinho
+                setNumero(value + ' ')
+            }
+            else if(value.length==16) setModo(1) // Garante que dá pra apagar o espaço depois
+            else if(value.length==14 && modo==1) setModo(0) //Garante que após apagar ele consiga escrever mantendo a mascara
+
+            if(value.length>=18) { //Garante que não passe de 18 caracteres
+                setNumero(value.substring(0, 18))
+            }
+        }
+        if(value.substring(value.length-1) === ' ' || value.substring(value.length-1) === '' ){
+            setNumero(value) // permite apagar caso o ultimo digito seja ' ' ou quando for o ultimo digito da sting a ser apagada   
+        }      
+    }       
+        
+    if (!receive) PegarPaises() //Carrega a lista de paises apenas uma vez
+    //console.disableYellowBox = true // Desabilita as Warnings
     
     return(
         <View style={style.conteiner} >
@@ -81,8 +113,15 @@ export default function adicionarCartao(){
                         <TextInput 
                             style={style.input} 
                             value={numero}
-                            onFocus={()=>setNumero('')}
-                            onChangeText={ (value)=> setNumero(value) }
+                            onFocus={()=> {
+                                if(numero=== '...') setNumero('')
+                            }}
+                            onChangeText={ (value)=> onChangeNumero(value)}
+                            onBlur={()=> {
+                                if(numero.length==0){[
+                                    setNumero('...')
+                                ]} 
+                            }}
                         ></TextInput>
                     </View>
                     <View style={style.areaImg2}>
@@ -99,8 +138,29 @@ export default function adicionarCartao(){
                         <TextInput 
                             style={style.input} 
                             value={vencimento}
-                            onFocus={()=>setVencimento('')}
-                            onChangeText={ (value)=> setVencimento(value) }
+                            onFocus={()=> {
+                                if(vencimento==='MM/AA') setVencimento('')
+                                setModo(0)
+                            }}
+                            onChangeText={ (value)=> {
+                                console.log(value)
+                                if(!isNaN(parseInt(value.substring(value.length-1)))){
+                                    if(value.length<=5){
+                                        if(value.length==2){
+                                            setVencimento(value + '/')
+                                            setModo(1) //Permite que a '/' seja apagada depois
+                                        }
+                                        else setVencimento(value)
+                                    }
+                                }
+                                if(value.substring(value.length-1) === '/' || value.substring(value.length-1) === '' || (modo == 1 && !isNaN(parseInt(value.substring(value.length-1)))) ){
+                                    setVencimento(value) // permite apagar caso o ultimo digito seja / ou quando for o ultimo digito da sting a ser apagada   
+                                    setModo(0)
+                                }     
+                            }}
+                            onBlur={()=> {
+                                if(vencimento.length==0) setVencimento('MM/AA')
+                            }}
                         ></TextInput>
                     </View>
                     <View style={style.areaImg3}>
@@ -115,8 +175,20 @@ export default function adicionarCartao(){
                     <TextInput 
                             style={style.input} 
                             value={csv}
-                            onFocus={()=>setCsv('')}
-                            onChangeText={ (value)=> setCsv(value) }
+                            onFocus={()=> {
+                                if(csv === 'CSV') setCsv('')
+                            }}
+                            onChangeText={ (value)=> {
+                                if(!isNaN(parseInt(value.substring(value.length-1))) && value.length<=3){
+                                    setCsv(value) 
+                                }
+                                if(value.substring(value.length-1) === '' ){
+                                    setCsv(value) // permite apagar caso seja o ultimo digito da sting a ser apagada   
+                                }   
+                            }}
+                            onBlur={()=> {
+                                if(csv.length==0) setCsv('CSV')
+                            }}
                         ></TextInput>
                     </View>
                     <View style={style.areaImg3}>

@@ -21,10 +21,14 @@ exports.listarCartoes = async (req, res)=>{
 
 exports.adicionarCartao = async (req, res) =>{
     try{
-        
+        // caminho: /cartoes/adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira'
+        //ex: http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/05/27/426/Paulo/Master
+        var mes = req.params.mesVencimento
+        var ano = req.params.anoVencimento
+        var dataVencimento = mes + '/' + ano
         var cartao = {
             numero : req.params.numero,
-            dataVencimento : req.params.dataVencimento,
+            dataVencimento : dataVencimento,
             csv : req.params.csv,
             nomeDono : req.params.nomeDono,
             bandeira : req.params.bandeira
