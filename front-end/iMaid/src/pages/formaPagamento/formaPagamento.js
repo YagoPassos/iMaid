@@ -15,7 +15,6 @@ export default class formaPagamento extends Component{
         }
         this.pegarDadosBD = this.pegarDadosBD.bind(this)
         this.selecionarRadio = this.selecionarRadio.bind(this) 
-        this.setReceive = this.setReceive.bind(this)
       }
     
   pegarDadosBD () {
@@ -30,9 +29,7 @@ export default class formaPagamento extends Component{
     this.setState({opcaoPagamento: indice})
   }
   
-  setReceive(opcao){
-    this.setState({receive: opcao})
-  }
+
   
   render(){
     var state = this.state
@@ -43,23 +40,20 @@ export default class formaPagamento extends Component{
   
     var selecionarRadio =  this.selecionarRadio 
     var pegarDadosBD = this.pegarDadosBD
-    var setReceive = this.setReceive
     function RenderizarItens(props){
       
-      
+            
       return(
         <View style={style.item}> 
           <View style={style.areaInfoCartao}>
             <View style={style.icone}>
               <Image
                 style={style.img}
-                source = {{
-                  uri: 
+                source = {
                   props.tipo === 'Dinheiro'? require('./../../icones/dinheiro.png') : 
                   props.bandeira === 'MasterCard'? require('./../../icones/mastercard.png') :
-                  props.bandeira === 'Visa'? require('./../../icones/visa.png') :  
-                  props.bandeira === 'Outro'? require('./../../icones/credit-card.png') : ''
-                }}
+                  props.bandeira === 'Visa'? require('./../../icones/visa.png') :  require('./../../icones/credit-card.png')
+                }
               />
             </View>
             <View style={style.infoCartoes}>
@@ -91,7 +85,6 @@ export default class formaPagamento extends Component{
               style = {style.button}
               onPress={ ()=> {
                 navigation.navigate('Adicionar Cartão')
-                setReceive(false) //Faz fazer o fetch dos cartões quando voltar para a pagina
               }}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>

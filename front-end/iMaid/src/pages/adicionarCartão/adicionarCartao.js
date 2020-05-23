@@ -12,7 +12,7 @@ axios.get()
 // var axios = require('axios')
 
 
-export default function adicionarCartao({routes}){
+export default function adicionarCartao(){
 
     var [numero, setNumero] = useState('...')
     var [vencimento, setVencimento] = useState('MM/AA')
