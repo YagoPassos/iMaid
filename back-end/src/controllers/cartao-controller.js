@@ -36,14 +36,32 @@ exports.adicionarCartao = async (req, res) =>{
         
         var dados = Cartao(cartao)
         console.log(cartao)
-        dados.save((err, achados)=>{
+        await dados.save((err, achados)=>{
             if (err) return console.log('Erro ao salvar os dados: ' + err)
             else {
                 console.dir(achados)
-                res.send({status: 'OK'})
+                res.send({Sava: 'OK'})
             }
         })
     }catch(e){
         console.log('Erro ao escrever no banco de dados: ' + e)
+    }
+}
+
+exports.editarCartao = async (req, res)=>{
+    try {
+        var query = {numero: '4245 2158 2789 635'}
+        var newDate = { bandeira: 'Visa'}
+
+        await Cartao.findOneAndUpdate(query, newDate, {new: 'true'}, (err, doc)=>{
+            if(err) return console.log('Erro ao atualizar')
+            else{
+                res.send({Update: 'OK', Document: doc})
+                console.log('Atualizado com sucesso:\n' + doc)  
+            } 
+        })
+        
+    } catch (error) {
+        
     }
 }

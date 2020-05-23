@@ -15,22 +15,13 @@ const paisesController = require('./controllers/paises-controller')
 routes.get('/register', userController.listUsers);
 routes.post('/register', userController.createUsers);
 
-// Rotas Paulo
-
     // Rotas Cartão
 routes.get('/cartoes/', cartoesController.listarCartoes)
 routes.post('/cartoes/adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira', cartoesController.adicionarCartao)
+routes.post('/cartoes/editar', cartoesController.editarCartao)
 // http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
+
     // Rota Paises
 routes.get('/paises/', paisesController.listarPaises)
-
-
-var json
-const fs = require('fs')
-
-
-
-
-
 
 module.exports = routes;

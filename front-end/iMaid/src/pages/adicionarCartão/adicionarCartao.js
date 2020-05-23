@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler';
 import style from './styles'
 
+
 import axios from 'axios'
 
 axios.get()
@@ -11,7 +12,7 @@ axios.get()
 // var axios = require('axios')
 
 
-export default function adicionarCartao(){
+export default function adicionarCartao({routes}){
 
     var [numero, setNumero] = useState('...')
     var [vencimento, setVencimento] = useState('MM/AA')
@@ -19,7 +20,7 @@ export default function adicionarCartao(){
     var [dadosPicker, setDadosPicker] = useState([])
     var [pais, setPais] = useState('Brasil')
     var [dono, setDono] = useState('Paulo')
-    var [bandeira, setBandeira] = useState('Master')
+    var [bandeira, setBandeira] = useState('')
     var [receive, setReceive] = useState(false)
     var [modo, setModo] = useState(0)
 
@@ -64,7 +65,6 @@ export default function adicionarCartao(){
     function onChangeNumero(value){
         //Garante que só será cadastrado numeros
         if(!isNaN(parseInt(value.substring(value.length-1)))){
-            console.log('Number')
             setNumero(value)
             if(value.length==4 && modo===0 ) { //Faz o espaço sozinho
                 setNumero(value + ' ')
@@ -90,7 +90,16 @@ export default function adicionarCartao(){
         }
         if(value.substring(value.length-1) === ' ' || value.substring(value.length-1) === '' ){
             setNumero(value) // permite apagar caso o ultimo digito seja ' ' ou quando for o ultimo digito da sting a ser apagada   
-        }      
+        } 
+        // Coloca a devida bandeira no cartão
+        // O VISA é 4xxxxx O MASTERCARD varia de 51xxxx - 55xxxx
+        if (value.substring(0, 1) === '4'){
+            setBandeira('Visa')
+        }
+        else if(value.substring(0, 2) === '51' || numero.substring(0, 2) === '52' || numero.substring(0, 2) === '53' || numero.substring(0, 2) === '54' || numero.substring(0, 2) === '55'){
+            setBandeira('MasterCard')
+        }
+        else setBandeira('Outra')  
     }       
         
     if (!receive) PegarPaises() //Carrega a lista de paises apenas uma vez

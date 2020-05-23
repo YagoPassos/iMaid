@@ -15,7 +15,8 @@ export default class formaPagamento extends Component{
         }
         this.pegarDadosBD = this.pegarDadosBD.bind(this)
         this.selecionarRadio = this.selecionarRadio.bind(this) 
-    }
+        this.setReceive = this.setReceive.bind(this)
+      }
     
   pegarDadosBD () {
     fetch('http://192.168.0.104:3001/cartoes/')
@@ -28,7 +29,10 @@ export default class formaPagamento extends Component{
   selecionarRadio(indice){
     this.setState({opcaoPagamento: indice})
   }
- 
+  
+  setReceive(opcao){
+    this.setState({receive: opcao})
+  }
   
   render(){
     var state = this.state
@@ -39,7 +43,7 @@ export default class formaPagamento extends Component{
   
     var selecionarRadio =  this.selecionarRadio 
     var pegarDadosBD = this.pegarDadosBD
-    
+    var setReceive = this.setReceive
     function RenderizarItens(props){
       
       
@@ -49,7 +53,13 @@ export default class formaPagamento extends Component{
             <View style={style.icone}>
               <Image
                 style={style.img}
-                source = {{uri: 'https://trali.com.br/wp-content/uploads/2018/04/Produto-sem-imagem.jpg'}}
+                source = {{
+                  uri: 
+                  props.tipo === 'Dinheiro'? require('./../../icones/dinheiro.png') : 
+                  props.bandeira === 'MasterCard'? require('./../../icones/mastercard.png') :
+                  props.bandeira === 'Visa'? require('./../../icones/visa.png') :  
+                  props.bandeira === 'Outro'? require('./../../icones/credit-card.png') : ''
+                }}
               />
             </View>
             <View style={style.infoCartoes}>
@@ -80,7 +90,8 @@ export default class formaPagamento extends Component{
               <TouchableOpacity 
               style = {style.button}
               onPress={ ()=> {
-                navigation.navigate('Adicionar Cartão', )
+                navigation.navigate('Adicionar Cartão')
+                setReceive(false) //Faz fazer o fetch dos cartões quando voltar para a pagina
               }}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
