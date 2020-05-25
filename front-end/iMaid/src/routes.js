@@ -15,7 +15,7 @@ import adicionarCartao from './pages/adicionarCartão/adicionarCartao'
 export default function Routes(){
     return(
         <NavigationContainer>
-            <AppStack.Navigator screenOptions ={{ headerShown: false}}>
+            <AppStack.Navigator initialRouteName={'Forma De Pagamento'} screenOptions ={{ headerShown: false}}>
                 <AppStack.Screen name ="Login" component={Login}/>
                 <AppStack.Screen name ="Register" component={Register}/>
                 <AppStack.Screen name ="Forgot" component={Forgot}/>

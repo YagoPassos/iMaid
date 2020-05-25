@@ -5,6 +5,8 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       paddingTop: 20,
+      alignItems: "center",
+      justifyContent: 'center'
     },
     cabeçalho:{
       height: 35,
@@ -56,7 +58,15 @@ const styles = StyleSheet.create({
     button:{
       backgroundColor: '#40E0D0',
       height: 40,
-      width: 180,
+      width: 150,
+      borderRadius: 15,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    buttonDeletar:{
+      backgroundColor: '#ff0000',
+      height: 40,
+      width: 150,
       borderRadius: 15,
       alignItems: "center",
       justifyContent: "center",
@@ -92,6 +102,19 @@ const styles = StyleSheet.create({
       width: 15,
       borderRadius: 100,
       backgroundColor: '#40E0D0'
+    },
+    modalInside:{
+      backgroundColor:'#DDDE',
+      alignItems:"center",
+      justifyContent: "center",
+      height: 200,
+      width: '90%',
+      borderRadius: 15
+    },  
+    viewModal:{
+      flex: 1,
+      alignItems: "center",
+      justifyContent: 'center'
     }
   });
   
