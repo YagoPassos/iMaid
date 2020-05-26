@@ -2,26 +2,35 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import style from './styles'
+import axios from 'axios'
+
+
 
 
 export default class formaPagamento extends Component{
     constructor(props){
         super(props)
         this.state = {
+        ip : '192.168.0.104', // ip para requisições
         cartoes: [],
         opcaoPagamento: 6,
         tela: 'formaPagamento',
         receive: false,
         modalVisibility: false,
-        modalCartao: 6
+        idCartãoSelecionado: {_id: null, id: 6} // _id é o id do cartão no mongoDB, id é apenas o numero do cartão a ser imprimido no modal
         }
+
         this.showModal = this.showModal.bind(this)
         this.pegarDadosBD = this.pegarDadosBD.bind(this)
         this.selecionarRadio = this.selecionarRadio.bind(this) 
+        this.deletar = this.deletar.bind(this)
+        this.editar = this.editar.bind(this) 
       }
     
-  pegarDadosBD () {
-    fetch('http://192.168.0.104:3001/cartoes/')
+      
+  async pegarDadosBD () {
+    
+    await fetch(`http://${this.state.ip}:3001/cartoes/`)
     .then(response=> response.json())
     .then(cartoes=> {this.setState({ cartoes: cartoes })})
     console.log('Carregando dados de cartões...')
@@ -32,11 +41,27 @@ export default class formaPagamento extends Component{
     this.setState({opcaoPagamento: indice})
   }
   
-  showModal(opcao, id=0,){
-    console.log(`Indice: ${id}\nCartao: ${this.state.modalCartao}`)
+  showModal(opcao, id=6,){
     if(id !== 6){ //pra não fazer no item dinheiro
-      this.setState({modalVisibility: opcao, modalCartao: parseInt(id) })
+      id -= 1
+      this.setState({modalVisibility: opcao, idCartãoSelecionado: {_id: this.state.cartoes[id]['_id'], id: parseInt(id)+1 }})
     }
+    else if(!opcao) this.setState({modalVisibility: opcao}) // Apenas pra sair, sem modificar o idCartaoSelecionado
+    
+  }
+  // cartão para testes
+  // http://192.168.0.104:3001/cartoes/adicionarCartao/1111 1111 1111 111/27/19/819/Paulo/Outra
+  async deletar(){
+    let uri = `http://${this.state.ip}:3001/cartoes/apagar/${this.state.idCartãoSelecionado._id}`
+    console.log('Url: ' + uri)
+    await axios.delete(uri)
+    let vet = this.state.cartoes
+    let item = vet.pop(vet.length) //Remove o ultimo elemento
+    this.setState({cartoes: vet}) // atualiza o estado
+  }
+
+  async editar(){
+
   }
 
   RenderizarItens(props){        
@@ -159,11 +184,11 @@ export default class formaPagamento extends Component{
           <RenderizarItens tipo={'Dinheiro'}  indice={6}/>
                      
           <AdicionarCartao />
-        
-          <Text>Implementar deletar cartão</Text>
+          
+          <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
+          <Text>Colocal uma confirmação ao deletar/editar</Text>
           <Text>Implementar editar cartão</Text>
           <Text>Colocar limite de cartões = 3</Text>
-          <Text>Sah pohha</Text>
         
         
         </View>
@@ -176,12 +201,12 @@ export default class formaPagamento extends Component{
           >
             <View style={style.viewModal}>
               <View style={style.modalInside}>
-                <Text style={style}>Cartão {this.state.modalCartao}</Text>
-                <View style={{flexDirection: "row"}}>  Precisa implementar as devidas OnPress */}
-                  <TouchableOpacity style={style.button} onPress={()=> showModal(false)}>
+                <Text style={style}>Cartão {this.state.idCartãoSelecionado.id}</Text>
+                <View style={{flexDirection: "row"}}>  
+                  <TouchableOpacity style={style.button} onPress={()=> this.editar()}>
                     <Text style={style.textoButton}>Editar</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.buttonDeletar} onPress={()=> showModal(false)}>
+                  <TouchableOpacity style={style.buttonDeletar} onPress={()=> this.deletar()}>
                     <Text style={style.textoButton}>deletar</Text>
                   </TouchableOpacity>
                 </View>

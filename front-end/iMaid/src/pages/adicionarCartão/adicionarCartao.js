@@ -228,9 +228,8 @@ export default function adicionarCartao(){
             </View>
             
             <BotaoCadastrar/>
-
-            <Text>Implementar uma mascara de strings no input</Text>
-            <Text>Arrumar os inputs pro texto não sumir quando não digitar nada</Text>
+            <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
+            <Text>Colocal uma confirmação de sucesso ao inserir um cartão</Text>
             <Text>Exibir modal quando apertar na interrogação</Text>
             <Text>Fazer validação de strings no adicionarCartao</Text>
             

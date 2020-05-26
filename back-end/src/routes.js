@@ -18,9 +18,9 @@ routes.post('/register', userController.createUsers);
     // Rotas Cartão
 routes.get('/cartoes/', cartoesController.listarCartoes)
 routes.post('/cartoes/adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira', cartoesController.adicionarCartao)
-routes.post('/cartoes/editar', cartoesController.editarCartao)
+routes.post('/cartoes/editar/:id/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira', cartoesController.editarCartao)
 // http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
-
+routes.delete('/cartoes/apagar/:id', cartoesController.apagarCartao)
     // Rota Paises
 routes.get('/paises/', paisesController.listarPaises)
 

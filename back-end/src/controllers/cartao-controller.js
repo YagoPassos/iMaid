@@ -40,7 +40,7 @@ exports.adicionarCartao = async (req, res) =>{
             if (err) return console.log('Erro ao salvar os dados: ' + err)
             else {
                 console.dir(achados)
-                res.send({Sava: 'OK'})
+                res.send({Save: 'OK'})
             }
         })
     }catch(e){
@@ -50,10 +50,24 @@ exports.adicionarCartao = async (req, res) =>{
 
 exports.editarCartao = async (req, res)=>{
     try {
-        var query = {numero: '4245 2158 2789 635'}
+        
+        var query = {id: req.params.id}
         var newDate = { bandeira: 'Visa'}
 
-        await Cartao.findOneAndUpdate(query, newDate, {new: 'true'}, (err, doc)=>{
+        var mes = req.params.mesVencimento
+        var ano = req.params.anoVencimento
+        var dataVencimento = mes + '/' + ano
+        var cartao = {
+            numero : req.params.numero,
+            dataVencimento : dataVencimento,
+            csv : req.params.csv,
+            nomeDono : req.params.nomeDono,
+            bandeira : req.params.bandeira
+        }
+        
+        var dados = Cartao(cartao)
+        
+        await Cartao.findOneAndUpdate(query, dados, {new: 'true'}, (err, doc)=>{
             if(err) return console.log('Erro ao atualizar')
             else{
                 res.send({Update: 'OK', Document: doc})
@@ -63,5 +77,28 @@ exports.editarCartao = async (req, res)=>{
         
     } catch (error) {
         
+    }
+}
+
+exports.apagarCartao = async (req, res)=> {
+    try {
+        var query = {_id: req.params.id}
+        console.log('Deletar')
+        if(Mongoose.isValidObjectId(query._id)){ //Se for um id valido, apaga
+            await Cartao.findOneAndDelete(query, (err, doc)=>{
+                if(err) console.log('Erro ao apagar: ' + err)
+                else if(doc){
+                    console.log('Documento apagado com sucesso!!!' + doc)
+                    res.send({Delete: 'OK', Document: doc})
+                }
+                else res.send({Delete: 'Doc did not found'})
+            })       
+        }
+        else res.send({Delete: 'Failed'}) 
+
+
+
+    } catch (error) {
+        console.log('Erro ao apagar: ' + error)
     }
 }
