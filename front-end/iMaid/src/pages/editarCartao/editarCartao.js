@@ -6,14 +6,13 @@ import style from './styles'
 
 
 import axios from 'axios'
-
-axios.get()
-
-// var axios = require('axios')
+import { set } from 'react-native-reanimated';
 
 
-export default function adicionarCartao(){
 
+export default function adicionarCartao({route}){
+    const { _id } = route.params
+    const ip = '192.168.0.104'
     var [numero, setNumero] = useState('...')
     var [vencimento, setVencimento] = useState('MM/AA')
     var [csv, setCsv] = useState('CSV')
@@ -21,19 +20,48 @@ export default function adicionarCartao(){
     var [pais, setPais] = useState('Brasil')
     var [dono, setDono] = useState('Paulo')
     var [bandeira, setBandeira] = useState('')
-    var [receive, setReceive] = useState(false)
+    var [receivePaises, setReceivePaises] = useState(false)
+    var [receiveDados, setReceiveDados] = useState(false)
     var [modo, setModo] = useState(0)
-
+    
     function PegarPaises(){
-        fetch('http://192.168.0.104:3001/paises/')
+        fetch(`http://${ip}:3001/paises/`)
         .then((dados)=> dados.json())
         .then((dados)=> {
             setDadosPicker(dados.doc)
-            setReceive(true)
+            setReceivePaises(true)
             console.log('Leu os paises...')
         })
     }
     
+    // {
+    //     "status": "OK",
+    //     "doc": {
+    //         "_id": "5ec5f797f4fa275906456620",
+    //         "numero": "1234 1234 1234 123",
+    //         "dataVencimento": "09/27",
+    //         "csv": "123",
+    //         "nomeDono": "Paulo César",
+    //         "bandeira": "MasterCard",
+    //         "__v": 0
+    //     }
+    // }
+
+    async function PegarDadosBD(){
+        let url = `http://${ip}:3001/cartoes/achar/${_id}`
+        console.log('Url: ' + url)
+        await fetch(url)
+        .then((dados)=> dados.json())
+        .then((dados)=>{
+            let {numero, dataVencimento, csv, nomeDono, bandeira} = dados.doc
+            setNumero(numero)
+            setVencimento(dataVencimento)
+            setCsv(csv)
+            setDono(nomeDono)
+            setBandeira(bandeira)
+            setReceiveDados(true) //Para fazer a requisição apenas uma vez
+        })
+    }
     
 
     let item = dadosPicker.map((valor, i)=>{
@@ -48,7 +76,7 @@ export default function adicionarCartao(){
               <TouchableOpacity 
               style = {style.button}
               onPress={ () => {
-                var url = `http://192.168.0.104:3001/cartoes/adicionarCartao/${numero}/${vencimento}/${csv}/${dono}/${bandeira}`
+                var url = `http://192.168.0.104:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
                 axios.post(url)
                 console.log('URL POST: ' + url)  
             }}
@@ -102,8 +130,9 @@ export default function adicionarCartao(){
         else setBandeira('Outra')  
     }       
         
-    if (!receive) PegarPaises() //Carrega a lista de paises apenas uma vez
-    
+    if(!receiveDados) PegarDadosBD()    //faz a requisição apenas uma vez
+    if (!receivePaises) PegarPaises()   //Carrega a lista de paises apenas uma vez
+    console.disableYellowBox = true // Desabilita as Warnings
     return(
         <View style={style.conteiner} >
             <View style={style.areaInputNumero}> 

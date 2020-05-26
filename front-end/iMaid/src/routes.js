@@ -11,11 +11,14 @@ import Forgot from './pages/Forgot'
 // pages Paulo
 import formaPagamento from './pages/formaPagamento/formaPagamento'
 import adicionarCartao from './pages/adicionarCartão/adicionarCartao'
+import editarCartao from './pages/editarCartao/editarCartao'
 
+
+console.disableYellowBox = true // Desabilita as Warnings
 export default function Routes(){
     return(
         <NavigationContainer>
-            <AppStack.Navigator initialRouteName={'Forma De Pagamento'} screenOptions ={{ headerShown: false}}>
+            <AppStack.Navigator initialRouteName={'formaPagamento'} screenOptions ={{ headerShown: false}}>
                 <AppStack.Screen name ="Login" component={Login}/>
                 <AppStack.Screen name ="Register" component={Register}/>
                 <AppStack.Screen name ="Forgot" component={Forgot}/>
@@ -23,28 +26,41 @@ export default function Routes(){
                 {/* Telas Paulo C */}
                   
                 <AppStack.Screen 
-                name= 'Forma De Pagamento' 
+                name= 'formaPagamento' 
                 component={ formaPagamento }
                 options={{
                     headerStyle: style.header,
                     headerTitleStyle: style.title ,
                     headerTintColor: '#fff' ,
-                    headerShown: true
+                    headerShown: true,
+                    title: 'Forma De Pagamento'
                 }}
                 
                 />
                 <AppStack.Screen 
-                name= 'Adicionar Cartão' 
+                name= 'adicionarCartao' 
                 component={ adicionarCartao } 
                 options={{
                     headerStyle: style.header,
                     headerTitleStyle: style.title,
                     headerTintColor: '#fff',
-                    headerShown: true 
+                    headerShown: true,
+                    title: 'Adicionar Cartão' 
                 }}
 
                 />
+                <AppStack.Screen 
+                name= 'editarCartao' 
+                component={ editarCartao } 
+                options={{
+                    headerStyle: style.header,
+                    headerTitleStyle: style.title,
+                    headerTintColor: '#fff',
+                    headerShown: true,
+                    title: 'Editar Cartão' 
+                }}
 
+                />
             </AppStack.Navigator>
         </NavigationContainer>
     );

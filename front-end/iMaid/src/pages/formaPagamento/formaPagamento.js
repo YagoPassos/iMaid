@@ -3,8 +3,7 @@ import { Text, View, TouchableOpacity, Image, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import style from './styles'
 import axios from 'axios'
-
-
+// const navigation = useNavigation()
 
 
 export default class formaPagamento extends Component{
@@ -29,11 +28,13 @@ export default class formaPagamento extends Component{
     
       
   async pegarDadosBD () {
-    
-    await fetch(`http://${this.state.ip}:3001/cartoes/`)
+    //http://192.168.0.104:3001/cartoes/
+    var url = `http://${this.state.ip}:3001/cartoes/`
+    await fetch(url)
     .then(response=> response.json())
-    .then(cartoes=> {this.setState({ cartoes: cartoes })})
+    .then(cartoes=> {this.setState({ cartoes: cartoes.doc })})
     console.log('Carregando dados de cartões...')
+    console.log('URL: ' + url)
     this.setState({receive: true})
   }  
   
@@ -60,8 +61,10 @@ export default class formaPagamento extends Component{
     this.setState({cartoes: vet}) // atualiza o estado
   }
 
-  async editar(){
-
+  async editar(navigation){
+    this.setState({modalVisibility: false})
+    navigation.navigate('editarCartao', {_id:this.state.idCartãoSelecionado._id})
+    // Navega para a page editarCartao e passa o id do cartão selecionado para ele 
   }
 
   RenderizarItens(props){        
@@ -112,6 +115,8 @@ export default class formaPagamento extends Component{
     var selecionarRadio =  this.selecionarRadio 
     var pegarDadosBD = this.pegarDadosBD
     var showModal = this.showModal
+    var editar = this.editar
+    var deletar = this.deletar
     
     function RenderizarItens(props){        
       return(
@@ -158,7 +163,7 @@ export default class formaPagamento extends Component{
             <View style = {style.viewButton}>
               <TouchableOpacity 
               style = {style.button}
-              onPress={ ()=> navigation.navigate('Adicionar Cartão')}
+              onPress={ ()=> navigation.navigate('adicionarCartao')}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
               </TouchableOpacity>
@@ -167,6 +172,34 @@ export default class formaPagamento extends Component{
             </View>
         )
     }
+
+    function UseModal(){
+      const navigation = useNavigation()
+      return(
+        <Modal              
+            animationType={"slide"}
+            visible={state.modalVisibility}
+            transparent={true}
+            onRequestClose={()=> showModal(false)}
+          >
+            <View style={style.viewModal}>
+              <View style={style.modalInside}>
+                <Text style={style}>Cartão {state.idCartãoSelecionado.id}</Text>
+                <View style={{flexDirection: "row"}}>  
+                  <TouchableOpacity style={style.button} onPress={()=> editar(navigation)}>
+                    <Text style={style.textoButton}>Editar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.buttonDeletar} onPress={()=> deletar()}>
+                    <Text style={style.textoButton}>deletar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+      )
+    }
+
+    console.disableYellowBox = true // Desabilita as Warnings
     if(!state.receive) pegarDadosBD() // se nunca tiver recebidos os dados, faz a requisição
     return (
       <View style={style.container} > 
@@ -193,26 +226,7 @@ export default class formaPagamento extends Component{
         
         </View>
                   {/* ******** Modal ******** */}
-          <Modal              
-            animationType={"slide"}
-            visible={this.state.modalVisibility}
-            transparent={true}
-            onRequestClose={()=> showModal(false)}
-          >
-            <View style={style.viewModal}>
-              <View style={style.modalInside}>
-                <Text style={style}>Cartão {this.state.idCartãoSelecionado.id}</Text>
-                <View style={{flexDirection: "row"}}>  
-                  <TouchableOpacity style={style.button} onPress={()=> this.editar()}>
-                    <Text style={style.textoButton}>Editar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={style.buttonDeletar} onPress={()=> this.deletar()}>
-                    <Text style={style.textoButton}>deletar</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </Modal>
+        <UseModal/>
           
       </View>
     );
