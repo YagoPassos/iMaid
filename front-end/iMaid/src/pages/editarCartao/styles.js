@@ -140,6 +140,42 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         color: '#fff',
+      },
+      modalInside:{
+        backgroundColor:'#DDDE',
+        alignItems:"center",
+        justifyContent: "center",
+        height: 200,
+        width: '90%',
+        borderRadius: 15
+      },  
+      viewModal:{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: 'center'
+      },
+      buttonConfirmar:{
+        backgroundColor: '#40E0D0',
+        height: 40,
+        width: 150,
+        borderRadius: 15,
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: 8
+      },
+      buttonCancelar:{
+        backgroundColor: '#ff0000',
+        height: 40,
+        width: 150,
+        borderRadius: 15,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      textoModal:{
+        color: '#000',
+        fontSize: 20,
+        textShadowColor:"#000",
+        paddingBottom: 25
       }
 })
 

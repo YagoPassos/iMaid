@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Text, View, TextInput, Image, StyleSheet, Picker, TouchableOpacity} from 'react-native';
+import { Text, View, TextInput, Image, StyleSheet, Picker, TouchableOpacity ,Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { State } from 'react-native-gesture-handler';
 import style from './styles'
@@ -23,7 +23,8 @@ export default function adicionarCartao({route}){
     var [receivePaises, setReceivePaises] = useState(false)
     var [receiveDados, setReceiveDados] = useState(false)
     var [modo, setModo] = useState(0)
-    
+    var [modalVisibility, setModalVisibility] = useState(false)
+
     function PegarPaises(){
         fetch(`http://${ip}:3001/paises/`)
         .then((dados)=> dados.json())
@@ -68,6 +69,40 @@ export default function adicionarCartao({route}){
         return <Picker.Item key={i} label={valor.nome} value={valor.nome} />
     })
 
+
+    function confirmar(){
+        var url = `http://192.168.0.104:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
+        axios.post(url)
+        console.log('URL POST: ' + url) 
+        alert('Cartão editado com sucesso!!!')
+    }
+
+    function UseModal(){
+        const navigation = useNavigation()
+        return(
+          <Modal              
+              animationType={"slide"}
+              visible={modalVisibility}
+              transparent={true}
+              onRequestClose={()=> setModalVisibility(false)}
+            >
+              <View style={style.viewModal}>
+                <View style={style.modalInside}>
+                <Text style={style.textoModal}>Deseja confirmar a ação?</Text>
+                  <View style={{flexDirection: "row"}}>  
+                    <TouchableOpacity onPress={()=> setModalVisibility(false)} style={style.buttonCancelar} >
+                      <Text style={style.textoButton}>Cancelar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=> confirmar()} style={style.buttonConfirmar} >
+                      <Text style={style.textoButton}>Confirmar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+        )
+      }
+
     function BotaoCadastrar(){
         //adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira
         // ex: http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
@@ -75,11 +110,7 @@ export default function adicionarCartao({route}){
             <View style = {style.viewButton}>
               <TouchableOpacity 
               style = {style.button}
-              onPress={ () => {
-                var url = `http://192.168.0.104:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
-                axios.post(url)
-                console.log('URL POST: ' + url)  
-            }}
+              onPress={ () => setModalVisibility(true)}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
               </TouchableOpacity>
@@ -256,12 +287,11 @@ export default function adicionarCartao({route}){
             </View>
             
             <BotaoCadastrar/>
+          
+           <UseModal/>
+
             <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
-            <Text>Colocal uma confirmação de sucesso ao inserir um cartão</Text>
             <Text>Exibir modal quando apertar na interrogação</Text>
-            <Text>Fazer validação de strings no adicionarCartao</Text>
-            
-            
 
         </View>
     )

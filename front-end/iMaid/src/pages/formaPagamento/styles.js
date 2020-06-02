@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
     }, 
-    button:{
+    buttonEditar:{
       backgroundColor: '#40E0D0',
       height: 40,
       width: 150,
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
       borderRadius: 15,
       alignItems: "center",
       justifyContent: "center",
+      marginLeft: 8
     },
     viewButton:{
       position: 'absolute',
@@ -115,7 +116,30 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: "center",
       justifyContent: 'center'
-    }
+    },
+    textoModal:{
+      color: '#000',
+      fontSize: 20,
+      textShadowColor:"#000",
+      paddingBottom: 25
+    },
+    buttonConfirmar:{
+      backgroundColor: '#40E0D0',
+      height: 40,
+      width: 150,
+      borderRadius: 15,
+      alignItems: "center",
+      justifyContent: "center",
+      marginLeft: 8
+    },
+    buttonCancelar:{
+      backgroundColor: '#ff0000',
+      height: 40,
+      width: 150,
+      borderRadius: 15,
+      alignItems: "center",
+      justifyContent: "center",
+    },
   });
   
 export default styles

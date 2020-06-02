@@ -16,10 +16,12 @@ export default class formaPagamento extends Component{
         tela: 'formaPagamento',
         receive: false,
         modalVisibility: false,
+        modalVisibilityConfirmar: false,
         idCartãoSelecionado: {_id: null, id: 6} // _id é o id do cartão no mongoDB, id é apenas o numero do cartão a ser imprimido no modal
         }
 
         this.showModal = this.showModal.bind(this)
+        this.showModalConfirmar = this.showModalConfirmar.bind(this)
         this.pegarDadosBD = this.pegarDadosBD.bind(this)
         this.selecionarRadio = this.selecionarRadio.bind(this) 
         this.deletar = this.deletar.bind(this)
@@ -50,6 +52,10 @@ export default class formaPagamento extends Component{
     else if(!opcao) this.setState({modalVisibility: opcao}) // Apenas pra sair, sem modificar o idCartaoSelecionado
     
   }
+  showModalConfirmar(opcao,){
+    this.setState({modalVisibilityConfirmar: opcao}) 
+  }
+
   // cartão para testes
   // http://192.168.0.104:3001/cartoes/adicionarCartao/1111 1111 1111 111/27/19/819/Paulo/Outra
   async deletar(){
@@ -115,6 +121,7 @@ export default class formaPagamento extends Component{
     var selecionarRadio =  this.selecionarRadio 
     var pegarDadosBD = this.pegarDadosBD
     var showModal = this.showModal
+    var showModalConfirmar = this.showModalConfirmar
     var editar = this.editar
     var deletar = this.deletar
     
@@ -162,7 +169,7 @@ export default class formaPagamento extends Component{
             
             <View style = {style.viewButton}>
               <TouchableOpacity 
-              style = {style.button}
+              style = {style.buttonEditar}
               onPress={ ()=> navigation.navigate('adicionarCartao')}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
@@ -173,7 +180,7 @@ export default class formaPagamento extends Component{
         )
     }
 
-    function UseModal(){
+    function ModalOpcoes(){
       const navigation = useNavigation()
       return(
         <Modal              
@@ -184,13 +191,47 @@ export default class formaPagamento extends Component{
           >
             <View style={style.viewModal}>
               <View style={style.modalInside}>
-                <Text style={style}>Cartão {state.idCartãoSelecionado.id}</Text>
+                <Text style={style.textoModal}>Cartão {state.idCartãoSelecionado.id}</Text>
                 <View style={{flexDirection: "row"}}>  
-                  <TouchableOpacity style={style.button} onPress={()=> editar(navigation)}>
-                    <Text style={style.textoButton}>Editar</Text>
+                  <TouchableOpacity style={style.buttonEditar} onPress={()=> editar(navigation)}>
+                    <Text style={style.textoButton}>EDITAR</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={style.buttonDeletar} onPress={()=> deletar()}>
-                    <Text style={style.textoButton}>deletar</Text>
+                  <TouchableOpacity style={style.buttonDeletar} onPress={()=> {
+                    showModal(false)
+                    showModalConfirmar(true)
+                  }}>
+                    <Text style={style.textoButton}>DELETAR</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+      )
+    }
+
+    function confirmar(){
+      deletar()
+      showModalConfirmar(false)
+    }
+
+  function ModalConfirmar(){
+      const navigation = useNavigation()
+      return(
+        <Modal              
+            animationType={"slide"}
+            visible={state.modalVisibilityConfirmar}
+            transparent={true}
+            onRequestClose={()=> setModalVisibility(false)}
+          >
+            <View style={style.viewModal}>
+              <View style={style.modalInside}>
+              <Text style={style.textoModal}>Deseja confirmar a ação?</Text>
+                <View style={{flexDirection: "row"}}>  
+                  <TouchableOpacity onPress={()=> showModalConfirmar(false)} style={style.buttonCancelar} >
+                    <Text style={style.textoButton}>Cancelar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=> confirmar()} style={style.buttonConfirmar} >
+                    <Text style={style.textoButton}>Confirmar</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -226,8 +267,8 @@ export default class formaPagamento extends Component{
         
         </View>
                   {/* ******** Modal ******** */}
-        <UseModal/>
-          
+        <ModalOpcoes/>
+        <ModalConfirmar/>  
       </View>
     );
   }
