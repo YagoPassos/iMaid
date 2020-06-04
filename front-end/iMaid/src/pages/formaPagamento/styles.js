@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
     }, 
-    buttonEditar:{
+    button:{
       backgroundColor: '#40E0D0',
       height: 40,
-      width: 150,
-      borderRadius: 15,
+      width: 280,
+      borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
     },

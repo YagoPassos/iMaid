@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native'
 import { NavigationContainer} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import Constants from 'expo-constants'; // Ler as constantes do aplicativo
 
 const AppStack = createStackNavigator();
 // Pages Yago
@@ -13,7 +14,7 @@ import formaPagamento from './pages/formaPagamento/formaPagamento'
 import adicionarCartao from './pages/adicionarCartão/adicionarCartao'
 import editarCartao from './pages/editarCartao/editarCartao'
 
-
+globalThis.ip = Constants.manifest.extra.ip //Pega o IP de app.json e coloca em uma variavel global 
 console.disableYellowBox = true // Desabilita as Warnings
 export default function Routes(){
     return(

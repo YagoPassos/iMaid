@@ -1,18 +1,13 @@
 import React, { Component, useState } from 'react';
 import { Text, View, TextInput, Image, StyleSheet, Picker, TouchableOpacity ,Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native'
-import { State } from 'react-native-gesture-handler';
 import style from './styles'
 
 
 import axios from 'axios'
-import { set } from 'react-native-reanimated';
-
-
 
 export default function adicionarCartao({route}){
     const { _id } = route.params
-    const ip = '192.168.0.104'
     var [numero, setNumero] = useState('...')
     var [vencimento, setVencimento] = useState('MM/AA')
     var [csv, setCsv] = useState('CSV')
@@ -26,7 +21,7 @@ export default function adicionarCartao({route}){
     var [modalVisibility, setModalVisibility] = useState(false)
 
     function PegarPaises(){
-        fetch(`http://${ip}:3001/paises/`)
+        fetch(`http://${globalThis.ip}:3001/paises/`)
         .then((dados)=> dados.json())
         .then((dados)=> {
             setDadosPicker(dados.doc)
@@ -49,7 +44,7 @@ export default function adicionarCartao({route}){
     // }
 
     async function PegarDadosBD(){
-        let url = `http://${ip}:3001/cartoes/achar/${_id}`
+        let url = `http://${globalThis.ip}:3001/cartoes/achar/${_id}`
         console.log('Url: ' + url)
         await fetch(url)
         .then((dados)=> dados.json())

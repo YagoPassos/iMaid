@@ -25,7 +25,7 @@ export default function adicionarCartao(){
     var [modalVisibility, setModalVisibility] = useState(false)
 
     function PegarPaises(){
-        fetch('http://192.168.0.104:3001/paises/')
+        fetch(`http://${globalThis.ip}:3001/paises/`)
         .then((dados)=> dados.json())
         .then((dados)=> {
             setDadosPicker(dados.doc)
@@ -99,7 +99,7 @@ export default function adicionarCartao(){
     
 
     function confirmar(){
-        var url = `http://192.168.0.104:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
+        var url = `http://${globalThis.ip}:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
         axios.post(url)
         alert('Cartão editado com sucesso!!!')
         console.log('URL POST: ' + url) 

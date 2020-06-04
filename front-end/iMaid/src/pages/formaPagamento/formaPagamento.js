@@ -10,7 +10,6 @@ export default class formaPagamento extends Component{
     constructor(props){
         super(props)
         this.state = {
-        ip : '192.168.0.104', // ip para requisições
         cartoes: [],
         opcaoPagamento: 6,
         tela: 'formaPagamento',
@@ -31,12 +30,13 @@ export default class formaPagamento extends Component{
       
   async pegarDadosBD () {
     //http://192.168.0.104:3001/cartoes/
-    var url = `http://${this.state.ip}:3001/cartoes/`
+    var url = `http://${globalThis.ip}:3001/cartoes/`
+    console.log('URL: ' + url)
     await fetch(url)
     .then(response=> response.json())
     .then(cartoes=> {this.setState({ cartoes: cartoes.doc })})
     console.log('Carregando dados de cartões...')
-    console.log('URL: ' + url)
+    
     this.setState({receive: true})
   }  
   
@@ -59,7 +59,7 @@ export default class formaPagamento extends Component{
   // cartão para testes
   // http://192.168.0.104:3001/cartoes/adicionarCartao/1111 1111 1111 111/27/19/819/Paulo/Outra
   async deletar(){
-    let uri = `http://${this.state.ip}:3001/cartoes/apagar/${this.state.idCartãoSelecionado._id}`
+    let uri = `http://${globalThis.ip}:3001/cartoes/apagar/${this.state.idCartãoSelecionado._id}`
     console.log('Url: ' + uri)
     await axios.delete(uri)
     let vet = this.state.cartoes
@@ -163,13 +163,13 @@ export default class formaPagamento extends Component{
       );
     }
 
-    function AdicionarCartao(){
+    function ButtonAdicionarCartao(){
         const navigation = useNavigation()
         return(
             
             <View style = {style.viewButton}>
               <TouchableOpacity 
-              style = {style.buttonEditar}
+              style = {style.button}
               onPress={ ()=> navigation.navigate('adicionarCartao')}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
@@ -193,7 +193,7 @@ export default class formaPagamento extends Component{
               <View style={style.modalInside}>
                 <Text style={style.textoModal}>Cartão {state.idCartãoSelecionado.id}</Text>
                 <View style={{flexDirection: "row"}}>  
-                  <TouchableOpacity style={style.buttonEditar} onPress={()=> editar(navigation)}>
+                  <TouchableOpacity style={style.button} onPress={()=> editar(navigation)}>
                     <Text style={style.textoButton}>EDITAR</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={style.buttonDeletar} onPress={()=> {
@@ -257,7 +257,7 @@ export default class formaPagamento extends Component{
                      
           <RenderizarItens tipo={'Dinheiro'}  indice={6}/>
                      
-          <AdicionarCartao />
+          <ButtonAdicionarCartao />
           
           <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
           <Text>Colocal uma confirmação ao deletar/editar</Text>
