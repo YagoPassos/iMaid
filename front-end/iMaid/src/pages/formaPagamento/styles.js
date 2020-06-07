@@ -63,11 +63,19 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
     },
+    buttonEditar:{
+      backgroundColor: '#40E0D0',
+      height: 40,
+      width: 150,
+      borderRadius: 9,
+      alignItems: "center",
+      justifyContent: "center",
+    },
     buttonDeletar:{
       backgroundColor: '#ff0000',
       height: 40,
       width: 150,
-      borderRadius: 15,
+      borderRadius: 9,
       alignItems: "center",
       justifyContent: "center",
       marginLeft: 8

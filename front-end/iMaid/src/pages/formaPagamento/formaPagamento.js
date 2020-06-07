@@ -1,79 +1,88 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, Image, Modal} from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import style from './styles'
 import axios from 'axios'
 // const navigation = useNavigation()
 
 
-export default class formaPagamento extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-        cartoes: [],
-        opcaoPagamento: 6,
-        tela: 'formaPagamento',
-        receive: false,
-        modalVisibility: false,
-        modalVisibilityConfirmar: false,
-        idCartãoSelecionado: {_id: null, id: 6} // _id é o id do cartão no mongoDB, id é apenas o numero do cartão a ser imprimido no modal
-        }
-
-        this.showModal = this.showModal.bind(this)
-        this.showModalConfirmar = this.showModalConfirmar.bind(this)
-        this.pegarDadosBD = this.pegarDadosBD.bind(this)
-        this.selecionarRadio = this.selecionarRadio.bind(this) 
-        this.deletar = this.deletar.bind(this)
-        this.editar = this.editar.bind(this) 
-      }
-    
+export default function formaPagamento (props, {routes}){
+      var [cartoes, setCartoes] = useState([])
+      var [opcaoPagamento, setOpcaoPagamento] = useState(null)
+      var [modalVisibility, setModalVisibility] = useState(false)
+      var [modalVisibilityConfirmar, setModalVisibilityConfirmar] = useState(false)
+      var [idCartãoSelecionado, setIdCartaoSelecionado] = useState({_id: null, id: 6}) // _id é o id do cartão no mongoDB, id é apenas o numero do cartão a ser imprimido no modal
+      var [receive, setReceive] = useState(false)
+      const navigation = useNavigation()
       
-  async pegarDadosBD () {
-    //http://192.168.0.104:3001/cartoes/
-    var url = `http://${globalThis.ip}:3001/cartoes/`
-    console.log('URL: ' + url)
-    await fetch(url)
+      // useEffect(
+      //   React.useCallback(()=>{
+      //     pegarDadosBD()
+      //     console.log('Carregando dados de cartões...')
+      //     setReceive(true)
+      //   }), [receive]
+      // )
+
+      useFocusEffect(
+        React.useCallback(()=>{
+          if(!receive){
+            pegarDadosBD()
+            setReceive(true)
+          }
+        })
+      )
+     
+  function pegarDadosBD () {
+    //http://192.168.0.104:${globalThis.porta}/cartoes/
+    var url = `http://${globalThis.ip}:${globalThis.porta}/cartoes/`
+    //console.log('URL: ' + url)
+    fetch(url)
     .then(response=> response.json())
-    .then(cartoes=> {this.setState({ cartoes: cartoes.doc })})
-    console.log('Carregando dados de cartões...')
+    .then(cartoes=> {setCartoes(cartoes.doc )})
     
-    this.setState({receive: true})
   }  
+
   
-  selecionarRadio(indice){
-    this.setState({opcaoPagamento: indice})
+  
+  function selecionarRadio(indice){
+    setOpcaoPagamento(indice)
+    globalThis.metodoPagamento = (indice!==6 ? cartoes[indice-1]['_id'] : 'Dinheiro'  )
+    // Recebe o id do cartão selecionado, se o indice for 6 recebe 'Dinheiro'
   }
   
-  showModal(opcao, id=6,){
+  function showModal(opcao, id=6,){
     if(id !== 6){ //pra não fazer no item dinheiro
       id -= 1
-      this.setState({modalVisibility: opcao, idCartãoSelecionado: {_id: this.state.cartoes[id]['_id'], id: parseInt(id)+1 }})
+      setModalVisibility( opcao)
+      setIdCartaoSelecionado({_id: cartoes[id]['_id'], id: parseInt(id)+1 }) 
+      //idCartãoSelecionado: {_id: cartoes[id]['_id'], id: parseInt(id)+1 }})
     }
-    else if(!opcao) this.setState({modalVisibility: opcao}) // Apenas pra sair, sem modificar o idCartaoSelecionado
+    else if(!opcao) setModalVisibility(opcao) // Apenas pra sair, sem modificar o idCartaoSelecionado
     
   }
-  showModalConfirmar(opcao,){
-    this.setState({modalVisibilityConfirmar: opcao}) 
+  
+  function showModalConfirmar(opcao,){
+    setModalVisibilityConfirmar(opcao) 
   }
 
   // cartão para testes
-  // http://192.168.0.104:3001/cartoes/adicionarCartao/1111 1111 1111 111/27/19/819/Paulo/Outra
-  async deletar(){
-    let uri = `http://${globalThis.ip}:3001/cartoes/apagar/${this.state.idCartãoSelecionado._id}`
+  // http://192.168.0.104:${globalThis.porta}/cartoes/adicionarCartao/1111 1111 1111 111/27/19/819/Paulo/Outra
+  function deletar(){
+    let uri = `http://${globalThis.ip}:${globalThis.porta}/cartoes/apagar/${idCartãoSelecionado._id}`
     console.log('Url: ' + uri)
-    await axios.delete(uri)
-    let vet = this.state.cartoes
+    axios.delete(uri)
+    let vet = cartoes
     let item = vet.pop(vet.length) //Remove o ultimo elemento
-    this.setState({cartoes: vet}) // atualiza o estado
+    setCartoes(vet) // atualiza o estado
   }
 
-  async editar(navigation){
-    this.setState({modalVisibility: false})
-    navigation.navigate('editarCartao', {_id:this.state.idCartãoSelecionado._id})
+  function editar(navigation){
+    setModalVisibility( false )
+    navigation.navigate('editarCartao', {_id:idCartãoSelecionado._id})
     // Navega para a page editarCartao e passa o id do cartão selecionado para ele 
   }
 
-  RenderizarItens(props){        
+  function RenderizarItens(props){        
     return(
       <TouchableOpacity 
       activeOpacity={0.7}
@@ -100,7 +109,7 @@ export default class formaPagamento extends Component{
             style={ style.radioCirculo }
             onPress={()=> selecionarRadio(props.indice) }
             > 
-              {state.opcaoPagamento === props.indice && <View style={ style.radioBola }></View> } 
+              {opcaoPagamento === props.indice && <View style={ style.radioBola }></View> } 
             </TouchableOpacity>
           </View>
         </View>
@@ -110,20 +119,13 @@ export default class formaPagamento extends Component{
       </TouchableOpacity>
     );
   }
-
   
-  render(){
-    var state = this.state
-    let cartoes = this.state.cartoes.map((valor, i)=>(
-      <RenderizarItens numeroCartao={valor.numero} bandeira={valor.bandeira} indice={i+1} tipo={'Cartão'}/>
-    ))
+  let renderizarCartoes = cartoes.map((valor, i)=>(
+    <RenderizarItens numeroCartao={valor.numero} bandeira={valor.bandeira} indice={i+1} tipo={'Cartão'}/>
+  ))
   
-    var selecionarRadio =  this.selecionarRadio 
-    var pegarDadosBD = this.pegarDadosBD
-    var showModal = this.showModal
-    var showModalConfirmar = this.showModalConfirmar
-    var editar = this.editar
-    var deletar = this.deletar
+  
+    
     
     function RenderizarItens(props){        
       return(
@@ -152,7 +154,7 @@ export default class formaPagamento extends Component{
               style={ style.radioCirculo }
               onPress={()=> selecionarRadio(props.indice) }
               > 
-                {state.opcaoPagamento === props.indice && <View style={ style.radioBola }></View> } 
+                {opcaoPagamento === props.indice && <View style={ style.radioBola }></View> } 
               </TouchableOpacity>
             </View>
           </View>
@@ -163,37 +165,37 @@ export default class formaPagamento extends Component{
       );
     }
 
+
     function ButtonAdicionarCartao(){
-        const navigation = useNavigation()
         return(
-            
             <View style = {style.viewButton}>
               <TouchableOpacity 
               style = {style.button}
-              onPress={ ()=> navigation.navigate('adicionarCartao')}
+              onPress={ ()=> {
+                navigation.navigate('adicionarCartao')
+                //pegarDadosBD()
+                setReceive(false)
+              }}
               >
                 <Text style={ style.textoButton }>ADICIONAR CARTÃO</Text>
               </TouchableOpacity>
-            
-           
             </View>
         )
     }
 
     function ModalOpcoes(){
-      const navigation = useNavigation()
       return(
         <Modal              
             animationType={"slide"}
-            visible={state.modalVisibility}
+            visible={modalVisibility}
             transparent={true}
             onRequestClose={()=> showModal(false)}
           >
             <View style={style.viewModal}>
               <View style={style.modalInside}>
-                <Text style={style.textoModal}>Cartão {state.idCartãoSelecionado.id}</Text>
+                <Text style={style.textoModal}>Cartão {idCartãoSelecionado.id}</Text>
                 <View style={{flexDirection: "row"}}>  
-                  <TouchableOpacity style={style.button} onPress={()=> editar(navigation)}>
+                  <TouchableOpacity style={style.buttonEditar} onPress={()=> editar(navigation)}>
                     <Text style={style.textoButton}>EDITAR</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={style.buttonDeletar} onPress={()=> {
@@ -215,11 +217,10 @@ export default class formaPagamento extends Component{
     }
 
   function ModalConfirmar(){
-      const navigation = useNavigation()
       return(
         <Modal              
             animationType={"slide"}
-            visible={state.modalVisibilityConfirmar}
+            visible={modalVisibilityConfirmar}
             transparent={true}
             onRequestClose={()=> setModalVisibility(false)}
           >
@@ -241,7 +242,7 @@ export default class formaPagamento extends Component{
     }
 
     console.disableYellowBox = true // Desabilita as Warnings
-    if(!state.receive) pegarDadosBD() // se nunca tiver recebidos os dados, faz a requisição
+
     return (
       <View style={style.container} > 
         {/* <View style = { styles.cabeçalho }>
@@ -253,7 +254,7 @@ export default class formaPagamento extends Component{
          
          
                      
-          {cartoes} 
+          {renderizarCartoes} 
                      
           <RenderizarItens tipo={'Dinheiro'}  indice={6}/>
                      
@@ -271,7 +272,6 @@ export default class formaPagamento extends Component{
         <ModalConfirmar/>  
       </View>
     );
-  }
 }
 
 
