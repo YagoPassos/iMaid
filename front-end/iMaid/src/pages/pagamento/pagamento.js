@@ -13,10 +13,14 @@ import axios from 'axios'
 export default function pagamento(){
     var [metodoPagamento, setmetodoPagamento] = useState('Dinheiro')
     var [receive, setReceive] = useState(false)
-
+    var [email, setEmail] = useState('029171053@unifacs.edu.br')
+    var [endereço, setEndereço] = useState('Rua Dr. Clodoaldo Avelino N° 680')
+    var [numeroPedido, setNumeroPedido] = useState((Math.random()*10000000).toFixed(0))
+    var [valor, setValor] = useState('R$ 56,99')
     useFocusEffect(
         React.useCallback(()=>{
             if(!receive){
+                
                 setmetodoPagamento(globalThis.metodoPagamento)   
                 setReceive(true)
             }
@@ -32,24 +36,12 @@ export default function pagamento(){
                 setReceive(false)
             }}>
                 
-                <Text>ALTERAR</Text>
+                <Text style={{fontWeight: 'bold'}} >ALTERAR</Text>
                 </TouchableOpacity>
         )
     }
 
-    function Sevicos(props){
-        // Função map pra mapear os serviços escolhidos
-        return(                
-                <View style={style.areaEsquerda}>
-                    <View style={style.areaServico}>
-                        <Text>Diarista (Limpeza completa)</Text>
-                    </View>
-                    <View style={style.areaDireita}>
-                        <Text>R$ 52,99</Text>
-                    </View>
-                </View>
-        )
-    }
+   
 
     return(
         <View style={style.container}>
@@ -57,19 +49,28 @@ export default function pagamento(){
         
             <View style={style.areaItem}>
                 <View style={style.areaText}>
-                    <Text>Serviços escolhidos...</Text>
+                    <Text style={style.textoTitulo}>Detalhes do pedido</Text>
                 </View>
-                {/* Cada Serviço escolhido será renderizado aqui */}
-                <Sevicos />
+                <View style={style.areaServico}>
+                    <View style={style.areaEsquerda}>
+                        <Text style={{ marginLeft: 20,}}>Confirmação enviada para o seu email</Text>
+                        <Text style={style.Text}>{email}</Text>
+                        <Text style={style.Text}>Numero do pedido</Text>
+                    </View>
+                    <View style={style.areaDireita}>
+                        <Text style={{fontWeight: 'bold', marginTop: 55}} >{numeroPedido}</Text>
+                    </View>
+                </View>
             </View>
 
             <View style={style.areaItem}>
                 <View style={style.areaText}>
-                    <Text>Forma de pagamento</Text>
+                    <Text style={style.textoTitulo}>Método de pagamento</Text>
+                    <Text style={style.textoSubtitulo} >Cartão de credito</Text>
                 </View>
-                <View style={style.areaEsquerda}>
-                    <View style={style.areaServico}>
-                        <Text>{metodoPagamento? metodoPagamento : 'Dinheiro'}</Text>
+                <View style={style.areaServico}>
+                    <View style={style.areaEsquerda}>
+                        <Text style={{marginLeft: 20, color: '#909090'}}>{metodoPagamento? metodoPagamento : 'Dinheiro'}</Text>
                     </View>
                     <View style={style.areaDireita}>
                         <GoToFormaPagamento/>
@@ -77,44 +78,41 @@ export default function pagamento(){
                 </View>
             </View>
 
-            <View style={style.areaItem}>
+            <View style={style.areaEndereco}>
                 <View style={style.areaText}>
-                    <Text>Endereço do cliente</Text>
+                    <Text style={style.textoTitulo}>Endereço do cliente</Text>
                 </View>
-                <View style={style.areaEsquerda}>
-                    <View style={style.areaServico}>
-                        <Text>Rua Dr. Clodoaldo Avelino N° 680</Text>
-                        <Text>Cidade/Estado/Bairro</Text>
+                <View style={style.areaServico}>
+                    <View style={style.areaEsquerda}>
+                        <Text style={{marginLeft: 20, color: '#909090'}}>{endereço}</Text>
+                        <Text style={{marginLeft: 20, color: '#909090'}}>Cidade/Estado/Bairro</Text>
                     </View>
                     <View style={style.areaDireita}>
                         <TouchableOpacity>
-                            <Text>ALTERAR</Text>
+                            <Text style={{fontWeight: 'bold'}} >ALTERAR</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View> 
 
-            <View style={style.areaItem}>
+            <View style={style.areaResumo}>
                 <View style={style.areaText}>
-                    <Text>Resumo</Text>
+                    <Text style={style.textoTitulo}>Resumo</Text>
                 </View>
-                <View style={style.areaEsquerda}>
-                    <View style={style.areaServico}>
-                        <Text>Valor Total</Text>
+                <View style={style.areaValorTotal}>
+                    <View style={style.areaEsquerda}>
+                        <Text style={style.textoValor} >Valor Total</Text>
                     </View>
                     <View style={style.areaDireita}>
                         <TouchableOpacity>
-                            <Text>R$ 56,99</Text>
+                            <Text style={style.valor}>{valor}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
-
-            <Text>metodoSelecionado = {metodoPagamento}</Text>
-
-                    <TouchableOpacity style={style.button} onPress={()=> alert('Pagamento efetuado!')}>
-                        <Text>Botão de confirmar</Text>
-                    </TouchableOpacity>
+            <TouchableOpacity style={style.button} onPress={()=> alert('Pagamento efetuado!')}>
+                <Text style = { style.textoButton }>CONFIRMAR</Text>
+            </TouchableOpacity>
 
 
         </View>
