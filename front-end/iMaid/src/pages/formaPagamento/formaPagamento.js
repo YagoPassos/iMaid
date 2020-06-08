@@ -260,10 +260,6 @@ export default function formaPagamento (props, {routes}){
                      
           <ButtonAdicionarCartao />
           
-          <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
-          <Text>Colocal uma confirmação ao deletar/editar</Text>
-          <Text>Implementar editar cartão</Text>
-          <Text>Colocar limite de cartões = 3</Text>
         
         
         </View>

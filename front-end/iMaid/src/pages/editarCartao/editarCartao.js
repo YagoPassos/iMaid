@@ -296,8 +296,7 @@ export default function adicionarCartao({route}){
           
            <UseModal/>
 
-            <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
-            <Text>Exibir modal quando apertar na interrogação</Text>
+           
 
         </View>
     )

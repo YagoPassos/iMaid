@@ -113,17 +113,20 @@ const styles = StyleSheet.create({
       backgroundColor: '#40E0D0'
     },
     modalInside:{
-      backgroundColor:'#DDDE',
+      backgroundColor:'#fff',
       alignItems:"center",
       justifyContent: "center",
       height: 200,
       width: '90%',
-      borderRadius: 15
+      borderRadius: 15,
+      
     },  
     viewModal:{
       flex: 1,
       alignItems: "center",
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: (255,255,255, 100)
+      
     },
     textoModal:{
       color: '#000',
