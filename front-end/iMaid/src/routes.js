@@ -13,16 +13,19 @@ import Forgot from './pages/Forgot'
 import formaPagamento from './pages/formaPagamento/formaPagamento'
 import adicionarCartao from './pages/adicionarCartão/adicionarCartao'
 import editarCartao from './pages/editarCartao/editarCartao'
+// pages Daniel
+import Feed from './pages/Feed';
 
 globalThis.ip = Constants.manifest.extra.ip //Pega o IP de app.json e coloca em uma variavel global 
 console.disableYellowBox = true // Desabilita as Warnings
 export default function Routes(){
     return(
         <NavigationContainer>
-            <AppStack.Navigator initialRouteName={'formaPagamento'} screenOptions ={{ headerShown: false}}>
+            <AppStack.Navigator initialRouteName={'Feed'} screenOptions ={{ headerShown: false}}>
                 <AppStack.Screen name ="Login" component={Login}/>
                 <AppStack.Screen name ="Register" component={Register}/>
                 <AppStack.Screen name ="Forgot" component={Forgot}/>
+                <AppStack.Screen name="Feed" component={Feed} />
 
                 {/* Telas Paulo C */}
                   

@@ -3,14 +3,21 @@ const routes = express.Router();
 const mongoose = require('mongoose');
 const Users = require('./models/users');
 
+const Anuncios = require('./models/anuncios');
+
 const Empregados = require('./models/empregados');
 const Cartao = require('./models/cartoes')
 const Pais = require('./models/paises')
+
+const anunciosController = require('./controllers/anuncios-controller');
 
 const userController = require ('./controllers/usersControllers');
 
 const cartoesController = require('./controllers/cartao-controller')
 const paisesController = require('./controllers/paises-controller')
+
+routes.get('/anuncios', anunciosController.listAnuncios);
+routes.post('/anuncios', anunciosController.createAnuncio);
 
 routes.get('/register', userController.listUsers);
 routes.post('/register', userController.createUsers);
