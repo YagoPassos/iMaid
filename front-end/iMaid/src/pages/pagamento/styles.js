@@ -7,9 +7,9 @@ const style = StyleSheet.create({
         paddingTop: 8,
         alignItems: "center",
       },
-      areaItem: {
+      areaDetalhesPedido: {
         width: 345,
-        height: 120,
+        height: 140,
         marginBottom: 8,
         backgroundColor: '#fff',
         borderRadius: 0
@@ -89,7 +89,14 @@ const style = StyleSheet.create({
       Text:{
         color: '#909090',
         marginLeft: 20,
-      }
+      },
+      areaMetodoPagamento: {
+        width: 345,
+        height: 90,
+        marginBottom: 8,
+        backgroundColor: '#fff',
+        borderRadius: 0
+      },
 })
 
 export default style

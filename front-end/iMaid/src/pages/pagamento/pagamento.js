@@ -46,7 +46,7 @@ export default function pagamento(){
         <View style={style.container}>
 
         
-            <View style={style.areaItem}>
+            <View style={style.areaDetalhesPedido}>
                 <View style={style.areaText}>
                     <Text style={style.textoTitulo}>Detalhes do pedido</Text>
                 </View>
@@ -62,7 +62,7 @@ export default function pagamento(){
                 </View>
             </View>
 
-            <View style={style.areaItem}>
+            <View style={style.areaMetodoPagamento}>
                 <View style={style.areaText}>
                     <Text style={style.textoTitulo}>Método de pagamento</Text>
                     <Text style={style.textoSubtitulo} >{metodoPagamento=== 'Dinheiro' ? 'Ao final do serviço'  : metodoPagamento == undefined ? '' : metodoPagamento!== 'Dinheiro' ? 'Cartão de credito' : ''}</Text>
