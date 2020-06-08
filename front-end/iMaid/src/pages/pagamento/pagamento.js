@@ -20,7 +20,6 @@ export default function pagamento(){
     useFocusEffect(
         React.useCallback(()=>{
             if(!receive){
-                
                 setmetodoPagamento(globalThis.metodoPagamento)   
                 setReceive(true)
             }
@@ -66,11 +65,11 @@ export default function pagamento(){
             <View style={style.areaItem}>
                 <View style={style.areaText}>
                     <Text style={style.textoTitulo}>Método de pagamento</Text>
-                    <Text style={style.textoSubtitulo} >Cartão de credito</Text>
+                    <Text style={style.textoSubtitulo} >{metodoPagamento=== 'Dinheiro' ? 'Ao final do serviço'  : metodoPagamento == undefined ? '' : metodoPagamento!== 'Dinheiro' ? 'Cartão de credito' : ''}</Text>
                 </View>
                 <View style={style.areaServico}>
                     <View style={style.areaEsquerda}>
-                        <Text style={{marginLeft: 20, color: '#909090'}}>{metodoPagamento? metodoPagamento : 'Dinheiro'}</Text>
+                        <Text style={{marginLeft: 20, color: '#909090'}}>{metodoPagamento !== undefined ? metodoPagamento : 'Escolha o metódo de pagamento ->'}</Text>
                     </View>
                     <View style={style.areaDireita}>
                         <GoToFormaPagamento/>
@@ -113,7 +112,6 @@ export default function pagamento(){
             <TouchableOpacity style={style.button} onPress={()=> alert('Pagamento efetuado!')}>
                 <Text style = { style.textoButton }>CONFIRMAR</Text>
             </TouchableOpacity>
-
 
         </View>
     )

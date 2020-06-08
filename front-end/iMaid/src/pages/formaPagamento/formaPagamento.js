@@ -46,7 +46,7 @@ export default function formaPagamento (props, {routes}){
   
   function selecionarRadio(indice){
     setOpcaoPagamento(indice)
-    globalThis.metodoPagamento = (indice!==6 ? cartoes[indice-1]['_id'] : 'Dinheiro'  )
+    globalThis.metodoPagamento = (indice!==6 ? cartoes[indice-1]['numero'] : 'Dinheiro'  )
     // Recebe o id do cartão selecionado, se o indice for 6 recebe 'Dinheiro'
   }
   
