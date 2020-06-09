@@ -16,6 +16,10 @@ export default function Login() {
         navigation.navigate('Forgot')
     }
 
+    function navigateToFeed() {
+        navigation.navigate('Feed')
+    }
+
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
 
@@ -55,7 +59,7 @@ export default function Login() {
                     <TouchableOpacity>
                         <Text 
                         style={styles.btn}
-                        onPress={()=>{loginSystem()}}
+                        onPress={()=>{loginSystem(), navigateToFeed}}
                         >
                             Cadastrar
                         </Text>
