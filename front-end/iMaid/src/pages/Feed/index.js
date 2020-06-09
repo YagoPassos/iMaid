@@ -10,7 +10,7 @@ import logoImg from '../../assets/logo.png';
 import styles from './styles';
 
 export default function Feed() {
-
+    // os estados
     const [anuncios, setAnuncios] = useState([]);
 
     const [loading, setLoading] = useState(false);
@@ -35,6 +35,7 @@ export default function Feed() {
         setLoading(false);
     }
 
+    // É uma função que será disparada quando as variáveis do array mudarem.
     useEffect(() => {
         loadAnuncios();
     }, [])
@@ -48,7 +49,7 @@ export default function Feed() {
                     style={styles.menuButton}
                     onPress={() => navigateToAnuncio(anuncio)}
                 >
-                    <AntDesign name="bars" size={48} color="#737380" />
+                    <AntDesign name="home" size={48} color="#737380" />
                 </TouchableOpacity>
 
             </View>

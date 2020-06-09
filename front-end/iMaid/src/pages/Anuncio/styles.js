@@ -14,55 +14,54 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
 
-    incident: {
+    anuncio: {
         padding: 24,
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: '#4ecac2',
         marginBottom: 16,
-        marginTop: 48,
     },
 
-    incidentProperty: {
+    anuncioProperty: {
         fontSize: 14,
         color: '#41414d',
         fontWeight: 'bold',
-        marginTop: 24,
     },
 
-    incidentValue: {
+    anuncioValue: {
         marginTop: 8,
         fontSize: 15,
-        color: '#737380',
+        marginBottom: 24,
+        color: '#FFF',
     },
 
     contactBox: {
-        padding: 24,
+        padding: 12,
         borderRadius: 8,
         backgroundColor: '#FFF',
-        marginBottom: 16,
+        marginBottom: 8,
     },
 
-    heroTitle: {
+    contatoTitle: {
         fontWeight: 'bold',
         fontSize: 20,
         color: '#13131a',
         lineHeight: 30,
     },
 
-    heroDescription: {
+    contatoDescription: {
         fontSize: 15,
         color: '#737380',
-        marginTop: 16,
+
     },
 
     actions: {
-        marginTop: 16,
+        marginTop: 8,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
 
     action: {
-        backgroundColor: '#E02041',
+        backgroundColor: '#4ecac2',
         borderRadius: 8,
         height: 50,
         width: '48%',

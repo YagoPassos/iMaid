@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet} from 'react-native'
-import { NavigationContainer} from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import {StyleSheet} from 'react-native';
+import { NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Constants from 'expo-constants'; // Ler as constantes do aplicativo
 
 const AppStack = createStackNavigator();
@@ -15,6 +15,7 @@ import adicionarCartao from './pages/adicionarCartão/adicionarCartao'
 import editarCartao from './pages/editarCartao/editarCartao'
 // pages Daniel
 import Feed from './pages/Feed';
+import Anuncio from './pages/Anuncio';
 
 globalThis.ip = Constants.manifest.extra.ip //Pega o IP de app.json e coloca em uma variavel global 
 console.disableYellowBox = true // Desabilita as Warnings
@@ -25,7 +26,10 @@ export default function Routes(){
                 <AppStack.Screen name ="Login" component={Login}/>
                 <AppStack.Screen name ="Register" component={Register}/>
                 <AppStack.Screen name ="Forgot" component={Forgot}/>
+
+                {/* Telas Daniel */}
                 <AppStack.Screen name="Feed" component={Feed} />
+                <AppStack.Screen name="Anuncio" component={Anuncio} />
 
                 {/* Telas Paulo C */}
                   

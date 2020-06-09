@@ -9,13 +9,13 @@ import logoImg from '../../assets/logo.png';
 import styles from './styles';
 
 // No incidentProperty, ao invés de um objeto, foi passado um array de objetos para anexar estilizações. 
-// O objetivo foi mudar o marginTop do styles que ficou bugado. Passando duas estilizações para a mesma tag.
-export default function Detail() {
+// O objetivo foi usado para mudar o marginTop do styles que ficou bugado. Passando duas estilizações para a mesma tag.
+export default function Anuncio() {
     const navigation = useNavigation();
     const route = useRoute();
-
-    const incident = route.params.incident;
-    const message = `Olá ${incident.name}, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}`;
+    
+    const anuncio = route.params.anuncio;
+    const message = `Olá, vi seu anúncio: ${anuncio.titulo} e gostaria de contratar o serviço, o valor acordado é de ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(anuncio.valor)}.`;
 
     function navigateBack() {
         navigation.goBack();
@@ -23,14 +23,14 @@ export default function Detail() {
 
     function sendMail() {
         MailComposer.composeAsync({
-            subject: `Herói do caso: ${incident.title}`,
-            recipients: [incident.email],
+            subject: `Anuncio: ${anuncio.titulo}`,
+            recipients: ['daniel.fer.ss@hotmail.com'],
             body: message,
         })
     }
 
     function sendWhatsapp() {
-        Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`);
+        Linking.openURL(`whatsapp://send?phone=5571988173831&text=${message}`);
     }
 
     return (
@@ -39,28 +39,28 @@ export default function Detail() {
                 <Image source={logoImg} />
                 
                 <TouchableOpacity onPress={navigateBack}>
-                    <Feather name="arrow-left" size={28} color="#E82041" />
+                    <Feather name="arrow-left" size={28} color="#4ecac2" />
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.incident}>
-                <Text style={[styles.incidentProperty, { marginTop: 0 }]}>ONG:</Text>
-                <Text style={styles.incidentValue}>{incident.name} de {incident.city}/{incident.uf}</Text>
+            <View style={styles.anuncio}>
+                <Text style={styles.anuncioProperty}>TÍTULO DO ANÚNCIO:</Text>
+                <Text style={styles.anuncioValue}>{anuncio.titulo}</Text>
 
-                <Text style={styles.incidentProperty}>CASO:</Text>
-                <Text style={styles.incidentValue}>{incident.title}</Text>
+                <Text style={styles.anuncioProperty}>DESCRIÇÃO:</Text>
+                <Text style={styles.anuncioValue}>{anuncio.anuncio}</Text>
 
-                <Text style={styles.incidentProperty}>VALOR:</Text>
-                <Text style={styles.incidentValue}>
-                    {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}
+                <Text style={styles.anuncioProperty}>VALOR:</Text>
+                <Text style={styles.anuncioValue}>
+                    {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(anuncio.valor)}
                 </Text>
+
+                <Text style={styles.anuncioProperty}>Registro:</Text>
+                <Text style={styles.anuncioValue}>{anuncio.registro}</Text>
             </View>
 
             <View style={styles.contactBox}>
-                <Text style={styles.heroTitle}>Salve o dia!</Text>
-                <Text style={styles.heroTitle}>Seja o herói desse caso.</Text>
-
-                <Text style={styles.heroDescription}>Entre em contato:</Text>
+                <Text style={styles.contatoDescription}>Entre em contato:</Text>
                 <View style={styles.actions}>
                     <TouchableOpacity style={styles.action} onPress={sendWhatsapp}>
                         <Text style={styles.actionText}>WhatsApp</Text>
