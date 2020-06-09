@@ -24,11 +24,11 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
 
-   async function loginSystem(){
-      const response = api.get('register', user);
-      console.log(response.data.user)
+//    async function loginSystem(){
+//       const response = api.get('register', user);
+//       console.log(response.data.user)
 
-    }
+//     }
 
     return (
         <ImageBackground source={bg} style={styles.bgImg}>
@@ -59,7 +59,7 @@ export default function Login() {
                     <TouchableOpacity>
                         <Text 
                         style={styles.btn}
-                        onPress={()=>{loginSystem(), navigateToFeed}}
+                        onPress={()=>{navigateToFeed}}
                         >
                             Cadastrar
                         </Text>
