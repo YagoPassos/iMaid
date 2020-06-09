@@ -24,11 +24,12 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
 
-//    async function loginSystem(){
-//       const response = api.get('register', user);
-//       console.log(response.data.user)
-
-//     }
+    async function loginSystem() {
+        const response = await api.get('register').then(resp => {
+            console.log(resp.data);
+        });
+        console.log(response);
+    }
 
     return (
         <ImageBackground source={bg} style={styles.bgImg}>
@@ -57,9 +58,9 @@ export default function Login() {
                         onChangeText={password => setPassword(password)}
                     />
                     <TouchableOpacity>
-                        <Text 
-                        style={styles.btn}
-                        onPress={()=>{navigateToFeed}}
+                        <Text
+                            style={styles.btn}
+                            onPress={{ navigateToFeed }}
                         >
                             Cadastrar
                         </Text>
@@ -71,7 +72,7 @@ export default function Login() {
                         >
                             <Text style={styles.register}>Não tem conta ? Cadastre-se!</Text></TouchableOpacity>
                         <TouchableOpacity
-                            onPress={navigateToForgot}
+                            onPress={loginSystem(), navigateToForgot}
                         >
                             <Text style={styles.register}>Esqueceu a senha ?</Text></TouchableOpacity>
                     </View>
