@@ -2,14 +2,7 @@ import React, { Component, useState } from 'react';
 import { Text, View, TextInput, Image, StyleSheet, Picker, TouchableOpacity, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import style from './styles'
-
-
 import axios from 'axios'
-
-axios.get()
-
-// var axios = require('axios')
-
 
 export default function adicionarCartao(){
 
@@ -25,7 +18,7 @@ export default function adicionarCartao(){
     var [modalVisibility, setModalVisibility] = useState(false)
 
     function PegarPaises(){
-        fetch(`http://${globalThis.ip}:3001/paises/`)
+        fetch(`http://${globalThis.ip}:${globalThis.porta}/paises/`)
         .then((dados)=> dados.json())
         .then((dados)=> {
             setDadosPicker(dados.doc)
@@ -42,7 +35,7 @@ export default function adicionarCartao(){
 
     function BotaoCadastrar(){
         //adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira
-        // ex: http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
+        // ex: http://192.168.0.104:${globalThis.porta}/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
         return(
             <View style = {style.viewButton}>
               <TouchableOpacity 
@@ -99,7 +92,7 @@ export default function adicionarCartao(){
     
 
     function confirmar(){
-        var url = `http://${globalThis.ip}:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
+        var url = `http://${globalThis.ip}:${globalThis.porta}/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
         axios.post(url)
         alert('Cartão editado com sucesso!!!')
         console.log('URL POST: ' + url) 
@@ -260,8 +253,8 @@ export default function adicionarCartao(){
             
             <UseModal/>
 
-            <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
-            <Text>Exibir modal quando apertar na interrogação</Text>
+            
+           
            
             
             

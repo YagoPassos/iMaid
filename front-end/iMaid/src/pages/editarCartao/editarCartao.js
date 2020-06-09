@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Text, View, TextInput, Image, StyleSheet, Picker, TouchableOpacity ,Modal} from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import style from './styles'
 
 
@@ -20,13 +20,16 @@ export default function adicionarCartao({route}){
     var [modo, setModo] = useState(0)
     var [modalVisibility, setModalVisibility] = useState(false)
 
-    function PegarPaises(){
-        fetch(`http://${globalThis.ip}:3001/paises/`)
+   async function PegarPaises(){
+        await fetch(`http://${globalThis.ip}:${globalThis.porta}/paises/`)
         .then((dados)=> dados.json())
         .then((dados)=> {
             setDadosPicker(dados.doc)
             setReceivePaises(true)
             console.log('Leu os paises...')
+        })
+        .catch((reason)=>{
+            PegarPaises()
         })
     }
     
@@ -43,8 +46,15 @@ export default function adicionarCartao({route}){
     //     }
     // }
 
+    useFocusEffect(
+        React.useCallback(()=>{
+            if(!receiveDados) PegarDadosBD()    //faz a requisição apenas uma vez
+            if (!receivePaises) PegarPaises() 
+        })
+    )
+
     async function PegarDadosBD(){
-        let url = `http://${globalThis.ip}:3001/cartoes/achar/${_id}`
+        let url = `http://${globalThis.ip}:${globalThis.porta}/cartoes/achar/${_id}`
         console.log('Url: ' + url)
         await fetch(url)
         .then((dados)=> dados.json())
@@ -57,6 +67,9 @@ export default function adicionarCartao({route}){
             setBandeira(bandeira)
             setReceiveDados(true) //Para fazer a requisição apenas uma vez
         })
+        .catch((reason)=>{
+            PegarDadosBD()
+        })
     }
     
 
@@ -66,7 +79,7 @@ export default function adicionarCartao({route}){
 
 
     function confirmar(){
-        var url = `http://192.168.0.104:3001/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
+        var url = `http://192.168.0.104:${globalThis.porta}/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
         axios.post(url)
         console.log('URL POST: ' + url) 
         alert('Cartão editado com sucesso!!!')
@@ -100,7 +113,7 @@ export default function adicionarCartao({route}){
 
     function BotaoCadastrar(){
         //adicionarCartao/:numero/:mesVencimento/:anoVencimento/:csv/:nomeDono/:bandeira
-        // ex: http://192.168.0.104:3001/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
+        // ex: http://192.168.0.104:${globalThis.porta}/cartoes/adicionarCartao/11111111111/24/05/426/Paulo/Master
         return(
             <View style = {style.viewButton}>
               <TouchableOpacity 
@@ -156,9 +169,7 @@ export default function adicionarCartao({route}){
         else setBandeira('Outra')  
     }       
         
-    if(!receiveDados) PegarDadosBD()    //faz a requisição apenas uma vez
-    if (!receivePaises) PegarPaises()   //Carrega a lista de paises apenas uma vez
-    console.disableYellowBox = true // Desabilita as Warnings
+       console.disableYellowBox = true // Desabilita as Warnings
     return(
         <View style={style.conteiner} >
             <View style={style.areaInputNumero}> 
@@ -285,8 +296,7 @@ export default function adicionarCartao({route}){
           
            <UseModal/>
 
-            <Text>Criar uma função para atualizar o status de cartões ao retornar da pagina adicionarCartao</Text>
-            <Text>Exibir modal quando apertar na interrogação</Text>
+           
 
         </View>
     )

@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         color: '#fff',
       },
       modalInside:{
-        backgroundColor:'#DDDE',
+        backgroundColor:'#fff',
         alignItems:"center",
         justifyContent: "center",
         height: 200,
@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
       viewModal:{
         flex: 1,
         alignItems: "center",
-        justifyContent: 'center'
+        justifyContent: 'center', 
+        backgroundColor: (255,255,255,100)
       },
       buttonConfirmar:{
         backgroundColor: '#40E0D0',

@@ -63,11 +63,19 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
     },
+    buttonEditar:{
+      backgroundColor: '#40E0D0',
+      height: 40,
+      width: 150,
+      borderRadius: 9,
+      alignItems: "center",
+      justifyContent: "center",
+    },
     buttonDeletar:{
       backgroundColor: '#ff0000',
       height: 40,
       width: 150,
-      borderRadius: 15,
+      borderRadius: 9,
       alignItems: "center",
       justifyContent: "center",
       marginLeft: 8
@@ -105,17 +113,20 @@ const styles = StyleSheet.create({
       backgroundColor: '#40E0D0'
     },
     modalInside:{
-      backgroundColor:'#DDDE',
+      backgroundColor:'#fff',
       alignItems:"center",
       justifyContent: "center",
       height: 200,
       width: '90%',
-      borderRadius: 15
+      borderRadius: 15,
+      
     },  
     viewModal:{
       flex: 1,
       alignItems: "center",
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: (255,255,255, 100)
+      
     },
     textoModal:{
       color: '#000',
