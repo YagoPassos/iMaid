@@ -23,7 +23,7 @@ console.disableYellowBox = true // Desabilita as Warnings
 export default function Routes(){
     return(
         <NavigationContainer>
-            <AppStack.Navigator initialRouteName={'Login'} screenOptions ={{ headerShown: false}}>
+            <AppStack.Navigator initialRouteName={'pagamento'} screenOptions ={{ headerShown: false}}>
                 <AppStack.Screen name ="Login" component={Login}/>
                 <AppStack.Screen name ="Register" component={Register}/>
                 <AppStack.Screen name ="Forgot" component={Forgot}/>

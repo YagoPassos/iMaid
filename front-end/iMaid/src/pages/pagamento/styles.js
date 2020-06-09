@@ -97,6 +97,7 @@ const style = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 0
       },
+      
 })
 
 export default style

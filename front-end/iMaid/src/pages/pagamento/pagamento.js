@@ -14,7 +14,7 @@ export default function pagamento(){
     var [metodoPagamento, setmetodoPagamento] = useState('Dinheiro')
     var [receive, setReceive] = useState(false)
     var [email, setEmail] = useState('029171053@unifacs.edu.br')
-    var [endereço, setEndereço] = useState('Rua Dr. Clodoaldo Avelino N° 680')
+    var [endereço, setEndereço] = useState('Endereço aqui')
     var [numeroPedido, setNumeroPedido] = useState((Math.random()*10000000).toFixed(0))
     var [valor, setValor] = useState('R$ 56,99')
     useFocusEffect(
@@ -87,7 +87,7 @@ export default function pagamento(){
                         <Text style={{marginLeft: 20, color: '#909090'}}>Cidade/Estado/Bairro</Text>
                     </View>
                     <View style={style.areaDireita}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=> alert('Método não implementado')} >
                             <Text style={{fontWeight: 'bold'}} >ALTERAR</Text>
                         </TouchableOpacity>
                     </View>
@@ -103,7 +103,7 @@ export default function pagamento(){
                         <Text style={style.textoValor} >Valor Total</Text>
                     </View>
                     <View style={style.areaDireita}>
-                        <TouchableOpacity>
+                        <TouchableOpacity >
                             <Text style={style.valor}>{valor}</Text>
                         </TouchableOpacity>
                     </View>
