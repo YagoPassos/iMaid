@@ -92,10 +92,12 @@ export default function adicionarCartao(){
     
 
     function confirmar(){
-        var url = `http://${globalThis.ip}:${globalThis.porta}/cartoes/editar/${_id}/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
+        // http://192.168.0.104:3001/cartoes/adicionarCartao /1111 1111 1111 111/27/19/819/Paulo/Outra
+        var url = `http://${globalThis.ip}:${globalThis.porta}/cartoes/adicionarCartao/${numero}/${vencimento}/${csv}/${dono}/${bandeira}/${pais}`
         axios.post(url)
         alert('Cartão editado com sucesso!!!')
-        console.log('URL POST: ' + url) 
+        console.log('URL POST: ' + url)
+        setModalVisibility(false) 
     }
 
     function UseModal(){
