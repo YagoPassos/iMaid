@@ -150,9 +150,9 @@ export default function Register() {
 
                     <TouchableOpacity>
                         <Text
-                            onPress={navigateToLogin}
                             style={styles.btn}
                             onPress={() => {registerUser(data)}}
+                            onPress={navigateToLogin}
                         >
 
                             Cadastrar
